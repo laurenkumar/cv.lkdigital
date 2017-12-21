@@ -1,0 +1,171 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="./jquery-ui/jquery-ui.min.css">
+<script src="./jquery-ui/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="fontawesome-stars.css">
+<script src="./jquery.barrating.js"></script>
+<div class="display_flex3">
+
+	<div class="flex2">
+		{% if user %}
+		<div class="draggable draggable1">
+		{% else %}
+		<div class="">
+		{% endif %}
+			<h3 class="titre-title2"><a href="/experiences">Expèriences</a></h3>
+			{% for e in experiences %}
+			<div class="display_flex3 son_flex">
+				<div class="flex2">
+					<div class="">
+						<h4 class="titre-title"><a href="/experience/{{e._id}}" itemprop="name" class="titre_job">{{e.titre}}</a></h4>
+						<h5 class="styleh">
+							<span class="company-name">{{e.entreprise}} . {{e.date}}</span>
+						</h5>
+					</div>    	
+					<div class="">
+						<p class="style_p">
+							{{e.description}}
+						</p>
+					</div>
+
+					<div class="footer_experience">
+						<span class="experience-data contract-type">{{e.contrat}}</span>
+						<span class="experience-data city" itemprop="location">
+							{{e.location}}
+						</span>
+						<a class="style_rect" href="/experience/{{e._id}}">En savoir +</a>
+						{% if user %}
+						<a class="style_rect" href="edit/experience/{{e._id}}">Edit</a>
+						<a class="style_rect" href="sup/experience/{{e._id}}">Supprimer</a>
+						{% endif %}
+					</div>
+				</div>
+				<div class="flex text_center">
+					<img class="experience-logo" src="../uploads/{{e.logo}}" itemprop="image">
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		{% if user %}
+		<div class="draggable draggable2">
+		{% else %}
+		<div class="">
+		{% endif %}
+			<h3 class="titre-title2"><a href="/formation">Formations</a></h3>
+			{% for f in formation %}
+			<div class="display_flex3 son_flex">
+				<div class="flex2">
+					<div class="">
+						<h4 class="titre-title"><a href="formation/{{f._id}}" itemprop="name" class="titre_job">{{f.titre}}</a></h4>
+						<h5 class="styleh">
+							<span class="company-name">{{f.entreprise}}</span>
+							<span>{{f.datedebut}} à {{f.datefin}}</span>
+						</h5>
+					</div>    	
+					<div class="">
+						<p class="style_p">
+							{{f.description}}
+						</p>
+					</div>
+
+					<div class="footer_experience">
+						{% if f.diplome %}
+						Diplome Délivré
+						<span class="experience-data city" itemprop="location">
+							{{f.diplome}}
+						</span>
+						{% endif %}
+						<a class="style_rect" href="formation/{{f._id}}">En savoir +</a>
+						{% if user %}
+						<a class="style_rect" href="edit/formation/{{f._id}}">Edit</a>
+						<a class="style_rect" href="sup/formation/{{f._id}}">Supprimer</a>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	<div class="flex right_menu">
+		{% if user %}
+		<div class="draggable draggable3">
+		{% else %}
+		<div class="">
+		{% endif %}
+			<h3 class="titre-title2"><a href="/competence">Compétences</a></h3>
+			{% for t in titrecompetence %}
+			<div class="display_flex3 son_flex">
+				<div class="flex2">
+					<div class="">
+						<h4 class="titre-title"><a href="/competence" itemprop="name" class="titre_job">{{t.titre}}</a></h4>
+						{% for c in competence %}
+							{% if c.titre == t.titre %}
+							<div class="">
+								<h5 class="styleh">
+									<span class="competence-name">{{c.competence}}</span>
+								</h5>
+								<div class=" br-wrapper br-theme-fontawesome-stars">
+			                        <select class="rating" name="rating" value="{{c.rating}}">
+			                          {% for i in range(1, 6) -%}
+			                          	{% if i == c.rating %}
+			                          		<option value="{{i}}" selected="{{c.rating}}">{{i}}</option>
+			                          	{% else %}
+			                         		<option value="{{i}}">{{i}}</option>
+			                         	{% endif %}
+			                          {%- endfor %}
+			                        </select>
+			                    </div>
+			                    {% if user %}
+			                    <a class="style_rect" href="edit/competence/{{c._id}}">Edit</a>
+								<a class="style_rect" href="sup/competence/{{c._id}}">Supprimer</a>
+								{% endif %}
+		                    </div>
+		                    {% endif %}
+	                    {% endfor %}
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		{% if user %}
+		<div class="draggable draggable4">
+		{% else %}
+		<div class="">
+		{% endif %}
+			<h3 class="titre-title2"><a href="/loisirs">Loisirs</a></h3>
+			<div class="display_flex3 son_flex">
+				<div class="flex2">
+					<div class="">
+						{% for l in loisirs %}
+						<div>
+							<h4 class="titre-title"><a href="/loisirs" itemprop="name" class="titre_job">{{l.titre}}</a></h4>
+							{{l.loisir | safe }}
+						</div>
+						{% if user %}
+						<a class="style_rect" href="edit/loisirs/{{l._id}}">Edit</a>
+						<a class="style_rect" href="sup/loisirs/{{l._id}}">Supprimer</a>
+						{% endif %}
+						{% endfor %}
+					</div>    	
+				</div>
+			</div>
+		</div>
+	</div>
+
+	</div>
+	<script>
+       $(function() {
+          $('.rating').barrating({
+            theme: 'fontawesome-stars',
+            readonly: true,
+          });
+          $(".draggable").draggable();
+          $( ".draggable1" ).resizable();
+          $( ".draggable2" ).resizable();
+          $( ".draggable3" ).resizable();
+          $( ".draggable4" ).resizable();
+       });
+    </script>
+	{% endblock %}

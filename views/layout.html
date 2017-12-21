@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        {% for a in admins %}
+        <title>LK CV {{a.name}}</title>
+        {% endfor %}
+        <meta charset="UTF-8"/>
+        <meta name="description" content="lktravels blog de voyage par deux developpeurs, Dorian Laurenceau Sopika Uthayakumar, travels site for blogging done by two developpers" />
+        <meta name="keywords" content="travels, voyages, voyage, travel, Dorian, Laurenceau, Sopika, Uthayakumar, blog, world, tourism, developpeur, developper, map, cms" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+        <script src="/modernizr.min.js"></script>
+        <script src="/jquery.min.js"></script>
+        <script src="/materialize.min.js"></script>
+        <script src="./jspdf.min.js"></script>
+        <script src="./jscolor.min.js"></script>
+        <link href="/style.css" rel="stylesheet">
+        <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110675121-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-110675121-1');
+        </script>
+    </head>
+    <body>
+        <div class="w3-sidebar w3-bar-block w3-collapse w3-card w3-animate-left" style="width:20%;" id="mySidebar">
+          <button class="w3-bar-item w3-button w3-large w3-hide-large" onclick="w3_close()">Close &times;</button>
+          {% for i in infos %}
+            <img id="my_photo" alt="myself" src="../uploads/{{i.picture}}">
+            <div id="my_infos">
+              <h3 class="titre-title">Infos</h3>
+              <ul class="userinfo-list">
+                  <li class="userinfo-item" id="userinfo-age">
+                      {{i.age}} ans
+                  </li>
+                  {% if i.permis == 'oui' %}
+                  <li class="userinfo-item" id="userinfo-driving-licence">
+                    Titulaire du permis de conduire
+                  </li>
+                  {% endif %} 
+                  <li class="userinfo-item" id="userinfo-city">
+                      {{i.ville}}
+                  </li>
+              </ul>
+            </div>
+
+            <div id="my_contact">
+              <h3 class="titre-title">Contact</h3>
+              <div class="display_flex2">
+                  {% if i.email %}
+                    <div id="email" class="contact-item"
+                    data-placement="bottom" data-container="#email" data-original-title="" title="">
+                    <i class="fa fa-envelope fa-2x" aria-hidden="true"></i>                </div>
+                  {% endif %}
+                  {% if i.skype %}
+                    <div id="skype" class="contact-item"
+                    data-placement="bottom" data-container="#skype" data-original-title="" title="">
+                    <i class="fa fa-skype fa-2x"></i>                </div>
+                  {% endif %}
+                  {% if i.linkedin %}
+                    <div id="linkedin" class="contact-item"
+                    data-placement="bottom" data-container="#linkedin" data-original-title="" title="">
+                    <i class="fa fa-linkedin fa-2x"></i>                </div>
+                  {% endif %} 
+              </div>
+            </div>
+            
+            <div id="my_situation">
+              <h3 class="titre-title">Situation professionnelle</h3>
+              <div class="display_flex2">
+                <ul class="userinfo-list">
+                  {% if i.situation %}
+                    <li class="userinfo-item" id="userinfo-situation">
+                      {{i.situation}}
+                    </li>
+                  {% endif %}
+                  {% if i.recherche == 'oui' %}
+                    <li class="userinfo-item" id="userinfo-age">
+                      En Recherche Active
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+
+            <div id="my_situation">
+              <h3 class="titre-title">Présentation</h3>
+              <div class="display_flex2 margin_bottom">
+                <p>
+                    {{i.description}}
+                </p>
+              </div>
+            </div>
+
+          {% endfor %}
+        </div>
+
+        <div class="w3-main" style="margin-left:20%">
+        <div class="w3-teal">
+          <button class="w3-button w3-teal w3-xlarge w3-hide-large" onclick="w3_open()">&#9776;</button>
+          <div class="w3-container">
+            <div class="text_center">
+              {% for a in admins %}
+              <a href="/"><h6>CV {{a.name}}</h5><h6>{{a.titre}}</h6></a>
+              {% if a.name == 'Dorian Laurenceau' %}
+              <a href="/"><button>Elle</button></a>
+              {% else %}
+              <a href="/lui"><button>Lui</button></a>
+              {% endif %}
+              {% endfor %}
+            </div>
+            <nav class="clearfix">
+              <div class="nav-mobile"><a id="nav-toggle" href="#!"><span></span></a></div>
+              <ul class="nav-list">
+                {% if user %}
+                <li>
+                  <a class="change_color" href="/admin">Administration</a>
+                </li>
+                <li>
+                  <a class="change_color" href="/users/logout">Logout</a>
+                </li>
+                {% endif %}
+                <li>
+                  <a href="/" class="change_color">ACCUEIL</a>
+                </li>
+                <li>
+                  <a href="/experiences" class="change_color">EXPERIENCES</a>
+                </li>
+                <li>
+                  <a href="/formation" class="change_color">FORMATIONS</a>
+                </li>
+                <li>
+                  <a href="/competence" class="change_color">COMPETENCES</a>
+                </li>
+                <li>
+                  <a href="/loisirs" class="change_color">LOISIRS</a>
+                </li>
+                <li>
+                  <a href="/contact" class="change_color">CONTACT</a>
+                </li>
+                {% if not user %}
+                <li>
+                  <a href="/users/login" class="change_color">LOGIN</a>
+                </li>
+                {% endif %}
+                <li class="contain_pdf">
+                  <button id="download">PDF</button>
+                </li>
+                <li class="contain_modal">
+                  <!-- Trigger/Open The Modal -->
+                  <button id="myBtn">Changer l'Aspect</button>
+
+                  <!-- The Modal -->
+                  <div id="myModal" class="modal">
+
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                      <span class="close">&times;</span>
+                      <div>
+                        <span>Background:</span>
+                        <input class="jscolor {onFineChange:'update(this)'}" value="cc66ff">
+                      </div>
+                      <div>
+                        <span>Couleur du texte générale:</span>
+                        <input class="jscolor {onFineChange:'texte(this)'}" value="cc66ff">
+                      </div>
+                      <div>
+                        <span>Couleur des titres:</span>
+                        <input class="jscolor {onFineChange:'texteTitre(this)'}" value="cc66ff">
+                      </div>
+                    </div>
+
+                  </div>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        
+        <div id="main" class="container">
+            {% block content %}{% endblock %}
+        </div>
+        <footer>
+          <div class="text_center display_flex">
+               © 2017 LK CV
+          </div>
+        </footer>
+        <script>
+          $(function() {
+            $("nav li a").click(function() {
+              $("nav li a").removeClass("current");
+              $(this).addClass("current");
+            });
+
+            $("#download").click(function() {
+              window.print();
+            });
+
+          });
+
+          function update(jscolor) {
+           // 'jscolor' instance can be used as a string
+            document.body.style.backgroundColor = '#' + jscolor;
+            document.getElementById('mySidebar').style.backgroundColor = '#' + jscolor;
+            $('.change_color').css("background-color", "#" + jscolor);
+          }
+
+          function texte(jscolor) {
+           // 'jscolor' instance can be used as a string
+            $('*').css("color", "#" + jscolor + " !important");
+          }
+
+          function texteTitre(jscolor) {
+           // 'jscolor' instance can be used as a string
+            $('.titre-title, .titre-title a').css("color", "#" + jscolor);
+          }
+
+          // Get the modal
+          var modal = document.getElementById('myModal');
+
+          // Get the button that opens the modal
+          var btn = document.getElementById("myBtn");
+
+          // Get the <span> element that closes the modal
+          var span = document.getElementsByClassName("close")[0];
+
+          // When the user clicks on the button, open the modal 
+          btn.onclick = function() {
+              modal.style.display = "block";
+          }
+
+          // When the user clicks on <span> (x), close the modal
+          span.onclick = function() {
+              modal.style.display = "none";
+          }
+
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+              if (event.target == modal) {
+                  modal.style.display = "none";
+              }
+          }
+
+          $( document ).ready(function() {      
+              var isMobile = window.matchMedia("only screen and (max-width: 760px)");
+
+              if (!isMobile.matches) {
+                document.getElementById("mySidebar").style.width = "20%";
+              }
+           });
+
+          function w3_open() {
+              document.getElementById("mySidebar").style.width = "100%";
+              document.getElementById("mySidebar").style.display = "block";
+          }
+          function w3_close() {
+              document.getElementById("mySidebar").style.display = "none";
+          }
+          (function($) { // Begin jQuery
+            $(function() { // DOM ready
+              // If a link has a dropdown, add sub menu toggle.
+              $('nav ul li a:not(:only-child)').click(function(e) {
+                $(this).siblings('.nav-dropdown').toggle();
+                // Close one dropdown when selecting another
+                $('.nav-dropdown').not($(this).siblings()).hide();
+                e.stopPropagation();
+              });
+              // Clicking away from dropdown will remove the dropdown class
+              $('html').click(function() {
+                $('.nav-dropdown').hide();
+              });
+              // Toggle open and close nav styles on click
+              $('#nav-toggle').click(function() {
+                $('nav ul').slideToggle();
+              });
+              // Hamburger to X toggle
+              $('#nav-toggle').on('click', function() {
+                this.classList.toggle('active');
+              });
+            }); // end DOM ready
+          })(jQuery); // end jQuery
+
+          
+        </script>
+    </body>
+</html>
